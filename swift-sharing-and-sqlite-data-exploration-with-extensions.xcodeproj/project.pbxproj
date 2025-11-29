@@ -8,9 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		945BF4212EDB821D00AD6B9F /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = 945BF4202EDB821D00AD6B9F /* SQLiteData */; };
+		945BF42C2EDB865100AD6B9F /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 945BF42B2EDB865100AD6B9F /* ReplayKit.framework */; };
+		945BF4332EDB865100AD6B9F /* BroadcastExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		945BF4312EDB865100AD6B9F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9499ADAD2EDB7C7E00E950D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 945BF4282EDB865100AD6B9F;
+			remoteInfo = BroadcastExtension;
+		};
 		9499ADC62EDB7C7F00E950D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9499ADAD2EDB7C7E00E950D1 /* Project object */;
@@ -27,13 +36,47 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		945BF4382EDB865100AD6B9F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				945BF4332EDB865100AD6B9F /* BroadcastExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BroadcastExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		945BF42B2EDB865100AD6B9F /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		9499ADB52EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-sharing-and-sqlite-data-exploration-with-extensions.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9499ADC52EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "swift-sharing-and-sqlite-data-exploration-with-extensionsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9499ADCF2EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "swift-sharing-and-sqlite-data-exploration-with-extensionsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		945BF4342EDB865100AD6B9F /* Exceptions for "BroadcastExtension" folder in "BroadcastExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 945BF4282EDB865100AD6B9F /* BroadcastExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		945BF42D2EDB865100AD6B9F /* BroadcastExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				945BF4342EDB865100AD6B9F /* Exceptions for "BroadcastExtension" folder in "BroadcastExtension" target */,
+			);
+			path = BroadcastExtension;
+			sourceTree = "<group>";
+		};
 		9499ADB72EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "swift-sharing-and-sqlite-data-exploration-with-extensions";
@@ -52,6 +95,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		945BF4262EDB865100AD6B9F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				945BF42C2EDB865100AD6B9F /* ReplayKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9499ADB22EDB7C7E00E950D1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -77,12 +128,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		945BF42A2EDB865100AD6B9F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				945BF42B2EDB865100AD6B9F /* ReplayKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9499ADAC2EDB7C7E00E950D1 = {
 			isa = PBXGroup;
 			children = (
 				9499ADB72EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */,
 				9499ADC82EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsTests */,
 				9499ADD22EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsUITests */,
+				945BF42D2EDB865100AD6B9F /* BroadcastExtension */,
+				945BF42A2EDB865100AD6B9F /* Frameworks */,
 				9499ADB62EDB7C7E00E950D1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,6 +154,7 @@
 				9499ADB52EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions.app */,
 				9499ADC52EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsTests.xctest */,
 				9499ADCF2EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsUITests.xctest */,
+				945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,6 +162,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		945BF4282EDB865100AD6B9F /* BroadcastExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 945BF4352EDB865100AD6B9F /* Build configuration list for PBXNativeTarget "BroadcastExtension" */;
+			buildPhases = (
+				945BF4252EDB865100AD6B9F /* Sources */,
+				945BF4262EDB865100AD6B9F /* Frameworks */,
+				945BF4272EDB865100AD6B9F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				945BF42D2EDB865100AD6B9F /* BroadcastExtension */,
+			);
+			name = BroadcastExtension;
+			packageProductDependencies = (
+			);
+			productName = BroadcastExtension;
+			productReference = 945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		9499ADB42EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9499ADD92EDB7C7F00E950D1 /* Build configuration list for PBXNativeTarget "swift-sharing-and-sqlite-data-exploration-with-extensions" */;
@@ -107,10 +191,12 @@
 				9499ADB12EDB7C7E00E950D1 /* Sources */,
 				9499ADB22EDB7C7E00E950D1 /* Frameworks */,
 				9499ADB32EDB7C7E00E950D1 /* Resources */,
+				945BF4382EDB865100AD6B9F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				945BF4322EDB865100AD6B9F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				9499ADB72EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */,
@@ -179,6 +265,9 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					945BF4282EDB865100AD6B9F = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					9499ADB42EDB7C7E00E950D1 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -212,11 +301,19 @@
 				9499ADB42EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */,
 				9499ADC42EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsTests */,
 				9499ADCE2EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsUITests */,
+				945BF4282EDB865100AD6B9F /* BroadcastExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		945BF4272EDB865100AD6B9F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9499ADB32EDB7C7E00E950D1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -241,6 +338,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		945BF4252EDB865100AD6B9F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9499ADB12EDB7C7E00E950D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -265,6 +369,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		945BF4322EDB865100AD6B9F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 945BF4282EDB865100AD6B9F /* BroadcastExtension */;
+			targetProxy = 945BF4312EDB865100AD6B9F /* PBXContainerItemProxy */;
+		};
 		9499ADC72EDB7C7F00E950D1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9499ADB42EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */;
@@ -278,6 +387,62 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		945BF4362EDB865100AD6B9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = BroadcastExtension/BroadcastExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4EC72DECN9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BroadcastExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BroadcastExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.halfjew22.swift-sharing-and-sqlite-data-exploration-with-extensions.BroadcastExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		945BF4372EDB865100AD6B9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = BroadcastExtension/BroadcastExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4EC72DECN9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BroadcastExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BroadcastExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.halfjew22.swift-sharing-and-sqlite-data-exploration-with-extensions.BroadcastExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9499ADD72EDB7C7F00E950D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -532,6 +697,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		945BF4352EDB865100AD6B9F /* Build configuration list for PBXNativeTarget "BroadcastExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				945BF4362EDB865100AD6B9F /* Debug */,
+				945BF4372EDB865100AD6B9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9499ADB02EDB7C7E00E950D1 /* Build configuration list for PBXProject "swift-sharing-and-sqlite-data-exploration-with-extensions" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
