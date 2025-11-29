@@ -14,7 +14,7 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         Text(item.title)
                             .font(.headline)
-                        Text(item.timestamp, style: .time)
+                        Text(item.timestamp.formatted(date: .omitted, time: .standard))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
