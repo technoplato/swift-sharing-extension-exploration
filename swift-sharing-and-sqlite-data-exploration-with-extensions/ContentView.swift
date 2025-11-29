@@ -1,21 +1,50 @@
-//
-//  ContentView.swift
-//  swift-sharing-and-sqlite-data-exploration-with-extensions
-//
-//  Created by Michael Lustig on 11/29/25.
-//
-
 import SwiftUI
+import SQLiteData
 
 struct ContentView: View {
+    @FetchAll(Item.order(by: \.timestamp))
+    var items: [Item]
+    
+    @Dependency(\.defaultDatabase) var database
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(items) { item in
+                    VStack(alignment: .leading) {
+                        Text(item.title)
+                            .font(.headline)
+                        Text(item.timestamp, style: .time)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .onDelete(perform: deleteItems)
+            }
+            .navigationTitle("Items")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: addItem) {
+                        Label("Add Item", systemImage: "plus")
+                    }
+                }
+            }
         }
-        .padding()
+    }
+    
+    private func addItem() {
+        let newItem = Item(id: UUID(), title: "Item \(Date().formatted())", timestamp: Date())
+        try? database.write { db in
+            try Item.insert { newItem }.execute(db)
+        }
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        try? database.write { db in
+            for index in offsets {
+                try Item.delete(items[index]).execute(db)
+            }
+        }
     }
 }
 

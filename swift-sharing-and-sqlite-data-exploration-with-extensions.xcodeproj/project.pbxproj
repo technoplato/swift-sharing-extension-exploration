@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		945BF4212EDB821D00AD6B9F /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = 945BF4202EDB821D00AD6B9F /* SQLiteData */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9499ADC62EDB7C7F00E950D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				945BF4212EDB821D00AD6B9F /* SQLiteData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = "swift-sharing-and-sqlite-data-exploration-with-extensions";
 			packageProductDependencies = (
+				945BF4202EDB821D00AD6B9F /* SQLiteData */,
 			);
 			productName = "swift-sharing-and-sqlite-data-exploration-with-extensions";
 			productReference = 9499ADB52EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 9499ADAC2EDB7C7E00E950D1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				945BF41F2EDB821D00AD6B9F /* XCRemoteSwiftPackageReference "sqlite-data" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9499ADB62EDB7C7E00E950D1 /* Products */;
 			projectDirPath = "";
@@ -558,6 +567,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		945BF41F2EDB821D00AD6B9F /* XCRemoteSwiftPackageReference "sqlite-data" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/sqlite-data";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		945BF4202EDB821D00AD6B9F /* SQLiteData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 945BF41F2EDB821D00AD6B9F /* XCRemoteSwiftPackageReference "sqlite-data" */;
+			productName = SQLiteData;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9499ADAD2EDB7C7E00E950D1 /* Project object */;
 }
