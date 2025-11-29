@@ -10,6 +10,7 @@
 		945BF4212EDB821D00AD6B9F /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = 945BF4202EDB821D00AD6B9F /* SQLiteData */; };
 		945BF42C2EDB865100AD6B9F /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 945BF42B2EDB865100AD6B9F /* ReplayKit.framework */; };
 		945BF4332EDB865100AD6B9F /* BroadcastExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		94E1C93C2EDB89ED008F126F /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = 94E1C93B2EDB89ED008F126F /* SQLiteData */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,13 @@
 			);
 			target = 945BF4282EDB865100AD6B9F /* BroadcastExtension */;
 		};
+		94E1C93A2EDB893F008F126F /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "BroadcastExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SharedDatabase.swift,
+			);
+			target = 945BF4282EDB865100AD6B9F /* BroadcastExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -79,6 +87,9 @@
 		};
 		9499ADB72EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				94E1C93A2EDB893F008F126F /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "BroadcastExtension" target */,
+			);
 			path = "swift-sharing-and-sqlite-data-exploration-with-extensions";
 			sourceTree = "<group>";
 		};
@@ -99,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94E1C93C2EDB89ED008F126F /* SQLiteData in Frameworks */,
 				945BF42C2EDB865100AD6B9F /* ReplayKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,6 +191,7 @@
 			);
 			name = BroadcastExtension;
 			packageProductDependencies = (
+				94E1C93B2EDB89ED008F126F /* SQLiteData */,
 			);
 			productName = BroadcastExtension;
 			productReference = 945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */;
@@ -757,6 +770,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		945BF4202EDB821D00AD6B9F /* SQLiteData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 945BF41F2EDB821D00AD6B9F /* XCRemoteSwiftPackageReference "sqlite-data" */;
+			productName = SQLiteData;
+		};
+		94E1C93B2EDB89ED008F126F /* SQLiteData */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 945BF41F2EDB821D00AD6B9F /* XCRemoteSwiftPackageReference "sqlite-data" */;
 			productName = SQLiteData;
