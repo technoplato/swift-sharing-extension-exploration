@@ -6,11 +6,14 @@
 //
 
 import ReplayKit
+import SQLiteData
+import GRDB
 
 class SampleHandler: RPBroadcastSampleHandler {
 
     override func broadcastStarted(withSetupInfo setupInfo: [String : NSObject]?) {
-        // User has requested to start the broadcast. Setup info from the UI extension can be supplied but optional. 
+        // User has requested to start the broadcast.
+        logEvent("Broadcast Started")
     }
     
     override func broadcastPaused() {
@@ -23,6 +26,17 @@ class SampleHandler: RPBroadcastSampleHandler {
     
     override func broadcastFinished() {
         // User has requested to finish the broadcast.
+        logEvent("Broadcast Finished")
+    }
+    
+    override func broadcastAnnotated(withApplicationInfo applicationInfo: [AnyHashable : Any]) {
+        // Log application info
+        if let jsonData = try? JSONSerialization.data(withJSONObject: applicationInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            logEvent("Broadcast Annotated: \(jsonString)")
+        } else {
+            logEvent("Broadcast Annotated: \(applicationInfo)")
+        }
     }
     
     override func processSampleBuffer(_ sampleBuffer: CMSampleBuffer, with sampleBufferType: RPSampleBufferType) {
@@ -39,6 +53,17 @@ class SampleHandler: RPBroadcastSampleHandler {
         @unknown default:
             // Handle other sample buffer types
             fatalError("Unknown type of sample buffer")
+        }
+    }
+    
+    private func logEvent(_ title: String) {
+        let item = Item(id: UUID(), title: title, timestamp: Date())
+        do {
+            try DatabaseQueue.appDatabase.write { db in
+                try Item.insert { item }.execute(db)
+            }
+        } catch {
+            print("Failed to log event: \(error)")
         }
     }
 }
