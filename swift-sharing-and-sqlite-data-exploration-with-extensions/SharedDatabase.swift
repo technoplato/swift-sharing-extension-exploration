@@ -17,7 +17,11 @@ extension DatabaseWriter where Self == DatabaseQueue {
             
         var databaseQueue: DatabaseQueue
         do {
-            databaseQueue = try DatabaseQueue(path: databaseURL.path)
+            var config = Configuration()
+            config.prepareDatabase = { db in
+                try db.execute(sql: "PRAGMA journal_mode = WAL")
+            }
+            databaseQueue = try DatabaseQueue(path: databaseURL.path, configuration: config)
         } catch {
             // Fallback for when App Group is not accessible (e.g. during previews if not configured)
             // or if the directory doesn't exist yet.
