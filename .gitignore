@@ -1,0 +1,4 @@
+.env
+GoogleService-Info.plist
+node_modules/
+firestore_logs.txt

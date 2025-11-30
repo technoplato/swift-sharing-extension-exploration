@@ -6,8 +6,11 @@
 //
 
 import ReplayKit
-import SQLiteData
-import GRDB
+// import SQLiteData
+// import GRDB
+import SharingFirestore
+import FirebaseCore
+import FirebaseFirestore
 import Dependencies
 
 class SampleHandler: RPBroadcastSampleHandler {
@@ -77,13 +80,17 @@ class SampleHandler: RPBroadcastSampleHandler {
     
     private func logEvent(_ title: String) {
         let item = Item(id: UUID(), title: title, timestamp: Date())
-        do {
-            try DatabasePool.appDatabase.write { db in
-                try Item.insert { item }.execute(db)
-            }
-            FileLogger.log("Logged event: \(title)")
-        } catch {
-            FileLogger.log("Failed to log event: \(error)")
+        
+        // Using Firestore directly
+        if FirebaseApp.app() != nil {
+             do {
+                 try Firestore.firestore().collection("items").addDocument(from: item)
+                 FileLogger.log("Logged event: \(title)")
+             } catch {
+                 FileLogger.log("Failed to log event: \(error)")
+             }
+        } else {
+             FileLogger.log("Firebase not configured, cannot log event: \(title)")
         }
     }
 }
