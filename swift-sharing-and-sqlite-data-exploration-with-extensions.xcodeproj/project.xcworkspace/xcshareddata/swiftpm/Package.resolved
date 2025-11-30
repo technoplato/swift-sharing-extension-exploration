@@ -1,5 +1,5 @@
 {
-  "originHash" : "975e10cfe0c297b2313418a230280e49d5526d215d8c07be4dd5cded5f8bad8f",
+  "originHash" : "c751f935fa3a471e49384fd1a529e791770b57764daf74f3ff1359b89eb5f693",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -125,6 +125,15 @@
       "state" : {
         "revision" : "b7e1104502eca3a213b46303391ca4d3bc8ddec1",
         "version" : "2.30910.0"
+      }
+    },
+    {
+      "identity" : "opencombine",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OpenCombine/OpenCombine.git",
+      "state" : {
+        "revision" : "8576f0d579b27020beccbccc3ea6844f3ddfc2c2",
+        "version" : "0.14.0"
       }
     },
     {

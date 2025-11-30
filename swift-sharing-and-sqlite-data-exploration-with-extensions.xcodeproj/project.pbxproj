@@ -12,6 +12,8 @@
 		945BF4332EDB865100AD6B9F /* BroadcastExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 945BF4292EDB865100AD6B9F /* BroadcastExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		94C668AB2EDC6C19007E924E /* SharingFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 94C668AA2EDC6C19007E924E /* SharingFirestore */; };
 		94C668AD2EDC6C6A007E924E /* SharingFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 94C668AC2EDC6C6A007E924E /* SharingFirestore */; };
+		94C668B12EDC740F007E924E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94C668B02EDC740F007E924E /* GoogleService-Info.plist */; };
+		94C668B22EDC740F007E924E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94C668B02EDC740F007E924E /* GoogleService-Info.plist */; };
 		94E1C93C2EDB89ED008F126F /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = 94E1C93B2EDB89ED008F126F /* SQLiteData */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +61,7 @@
 		9499ADB52EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swift-sharing-and-sqlite-data-exploration-with-extensions.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9499ADC52EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "swift-sharing-and-sqlite-data-exploration-with-extensionsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9499ADCF2EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "swift-sharing-and-sqlite-data-exploration-with-extensionsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94C668B02EDC740F007E924E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -72,6 +75,7 @@
 		94C668A82EDBE133007E924E /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "swift-sharing-and-sqlite-data-exploration-with-extensions" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"GoogleService-Info.plist",
 				Info.plist,
 			);
 			target = 9499ADB42EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */;
@@ -163,6 +167,7 @@
 		9499ADAC2EDB7C7E00E950D1 = {
 			isa = PBXGroup;
 			children = (
+				94C668B02EDC740F007E924E /* GoogleService-Info.plist */,
 				9499ADB72EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */,
 				9499ADC82EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsTests */,
 				9499ADD22EDB7C7F00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensionsUITests */,
@@ -339,6 +344,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94C668B22EDC740F007E924E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94C668B12EDC740F007E924E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
