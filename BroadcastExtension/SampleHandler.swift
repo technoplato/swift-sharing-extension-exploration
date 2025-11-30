@@ -8,11 +8,26 @@
 import ReplayKit
 import SQLiteData
 import GRDB
+import Dependencies
 
 class SampleHandler: RPBroadcastSampleHandler {
 
+    override init() {
+        super.init()
+        FileLogger.log("SampleHandler init")
+        do {
+            try prepareDependencies {
+                try! $0.bootstrapDatabase()
+            }
+            FileLogger.log("Dependencies prepared")
+        } catch {
+            FileLogger.log("Failed to prepare dependencies: \(error)")
+        }
+    }
+
     override func broadcastStarted(withSetupInfo setupInfo: [String : NSObject]?) {
         // User has requested to start the broadcast.
+        FileLogger.log("broadcastStarted")
         logEvent("Broadcast Started")
     }
     
@@ -26,7 +41,11 @@ class SampleHandler: RPBroadcastSampleHandler {
     
     override func broadcastFinished() {
         // User has requested to finish the broadcast.
+        FileLogger.log("broadcastFinished")
         logEvent("Broadcast Finished")
+        
+        // Give SyncEngine a moment to push changes
+        Thread.sleep(forTimeInterval: 1.0)
     }
     
     override func broadcastAnnotated(withApplicationInfo applicationInfo: [AnyHashable : Any]) {
@@ -62,9 +81,9 @@ class SampleHandler: RPBroadcastSampleHandler {
             try DatabasePool.appDatabase.write { db in
                 try Item.insert { item }.execute(db)
             }
-            notifyDatabaseChange()
+            FileLogger.log("Logged event: \(title)")
         } catch {
-            print("Failed to log event: \(error)")
+            FileLogger.log("Failed to log event: \(error)")
         }
     }
 }

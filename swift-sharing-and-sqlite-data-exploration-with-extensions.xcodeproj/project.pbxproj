@@ -67,6 +67,13 @@
 			);
 			target = 945BF4282EDB865100AD6B9F /* BroadcastExtension */;
 		};
+		94C668A82EDBE133007E924E /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "swift-sharing-and-sqlite-data-exploration-with-extensions" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9499ADB42EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */;
+		};
 		94E1C93A2EDB893F008F126F /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "BroadcastExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -88,6 +95,7 @@
 		9499ADB72EDB7C7E00E950D1 /* swift-sharing-and-sqlite-data-exploration-with-extensions */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				94C668A82EDBE133007E924E /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "swift-sharing-and-sqlite-data-exploration-with-extensions" target */,
 				94E1C93A2EDB893F008F126F /* Exceptions for "swift-sharing-and-sqlite-data-exploration-with-extensions" folder in "BroadcastExtension" target */,
 			);
 			path = "swift-sharing-and-sqlite-data-exploration-with-extensions";
@@ -587,6 +595,7 @@
 				DEVELOPMENT_TEAM = 4EC72DECN9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "swift-sharing-and-sqlite-data-exploration-with-extensions/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -617,6 +626,7 @@
 				DEVELOPMENT_TEAM = 4EC72DECN9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "swift-sharing-and-sqlite-data-exploration-with-extensions/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

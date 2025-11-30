@@ -8,12 +8,11 @@ struct ContentView: View {
     
     @Dependency(\.defaultDatabase) var database
     
+    let databaseChangePublisher = NotificationCenter.default.publisher(for: Notification.Name("DatabaseChanged"))
+    
     @State private var refreshID = UUID()
-    
-    init() {
-        _ = DatabaseChangeObserver.shared
-    }
-    
+    @State private var showAlert = false
+
     var body: some View {
         NavigationStack {
             List {
@@ -27,13 +26,18 @@ struct ContentView: View {
                     }
                 }
                 .onDelete(perform: deleteItems)
+                .id(refreshID) // Force rebuild
             }
-            .id(refreshID)
             .navigationTitle("Items")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
+                    }
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(action: deleteAllItems) {
+                        Label("Clear Logs", systemImage: "trash")
                     }
                 }
             }
@@ -50,9 +54,19 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding()
             }
-            .onReceive(NotificationCenter.default.publisher(for: .databaseChanged)) { _ in
-                refreshID = UUID()
-            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("com.halfjew22.swift-sharing-exploration.database_changed"))) { _ in
+            print("ContentView received database change notification - Forcing Refresh")
+            refreshID = UUID()
+            showAlert = true
+        }
+        .alert("Database Changed", isPresented: $showAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Received notification from extension.")
+        }
+        .onChange(of: items) { newItems in
+            print("Items updated: \(newItems.map { $0.title })")
         }
     }
     
@@ -68,6 +82,12 @@ struct ContentView: View {
             for index in offsets {
                 try Item.delete(items[index]).execute(db)
             }
+        }
+    }
+    
+    private func deleteAllItems() {
+        try? database.write { db in
+            try db.execute(sql: "DELETE FROM items")
         }
     }
 }
