@@ -59,9 +59,10 @@ class SampleHandler: RPBroadcastSampleHandler {
     private func logEvent(_ title: String) {
         let item = Item(id: UUID(), title: title, timestamp: Date())
         do {
-            try DatabaseQueue.appDatabase.write { db in
+            try DatabasePool.appDatabase.write { db in
                 try Item.insert { item }.execute(db)
             }
+            notifyDatabaseChange()
         } catch {
             print("Failed to log event: \(error)")
         }

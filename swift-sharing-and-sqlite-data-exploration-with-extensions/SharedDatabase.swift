@@ -2,6 +2,32 @@ import Foundation
 import SQLiteData
 import GRDB
 
+extension Notification.Name {
+    static let databaseChanged = Notification.Name("com.halfjew22.swift-sharing-exploration.databaseChanged")
+}
+
+func notifyDatabaseChange() {
+    let center = CFNotificationCenterGetDarwinNotifyCenter()
+    let name = Notification.Name.databaseChanged.rawValue as CFString
+    CFNotificationCenterPostNotification(center, name, nil, nil, true)
+}
+
+class DatabaseChangeObserver {
+    static let shared = DatabaseChangeObserver()
+    
+    private init() {
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        let name = Notification.Name.databaseChanged.rawValue as CFString
+        
+        CFNotificationCenterAddObserver(center, Unmanaged.passUnretained(self).toOpaque(), { _, _, _, _, _ in
+            // When Darwin notification is received, post a local notification
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .databaseChanged, object: nil)
+            }
+        }, name, nil, .deliverImmediately)
+    }
+}
+
 @Table
 struct Item: Identifiable {
     let id: UUID
@@ -9,24 +35,20 @@ struct Item: Identifiable {
     var timestamp: Date
 }
 
-extension DatabaseWriter where Self == DatabaseQueue {
+extension DatabaseWriter where Self == DatabasePool {
     static var appDatabase: Self {
         let databaseURL = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.halfjew22.swift-sharing-exploration")!
             .appendingPathComponent("db.sqlite")
             
-        var databaseQueue: DatabaseQueue
+        var databasePool: DatabasePool
         do {
-            var config = Configuration()
-            config.prepareDatabase = { db in
-                try db.execute(sql: "PRAGMA journal_mode = WAL")
-            }
-            databaseQueue = try DatabaseQueue(path: databaseURL.path, configuration: config)
+            databasePool = try DatabasePool(path: databaseURL.path)
         } catch {
             // Fallback for when App Group is not accessible (e.g. during previews if not configured)
             // or if the directory doesn't exist yet.
             print("Failed to access App Group container: \(error)")
-            databaseQueue = try! DatabaseQueue(path: databaseURL.path)
+            databasePool = try! DatabasePool(path: databaseURL.path)
         }
         
         var migrator = DatabaseMigrator()
@@ -37,8 +59,8 @@ extension DatabaseWriter where Self == DatabaseQueue {
                 t.column("timestamp", .datetime).notNull()
             }
         }
-        try! migrator.migrate(databaseQueue)
+        try! migrator.migrate(databasePool)
         
-        return databaseQueue
+        return databasePool
     }
 }

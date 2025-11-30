@@ -8,6 +8,12 @@ struct ContentView: View {
     
     @Dependency(\.defaultDatabase) var database
     
+    @State private var refreshID = UUID()
+    
+    init() {
+        _ = DatabaseChangeObserver.shared
+    }
+    
     var body: some View {
         NavigationStack {
             List {
@@ -22,6 +28,7 @@ struct ContentView: View {
                 }
                 .onDelete(perform: deleteItems)
             }
+            .id(refreshID)
             .navigationTitle("Items")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -42,6 +49,9 @@ struct ContentView: View {
                 .background(.thinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .databaseChanged)) { _ in
+                refreshID = UUID()
             }
         }
     }
