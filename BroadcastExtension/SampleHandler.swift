@@ -11,86 +11,166 @@ import ReplayKit
 import SharingFirestore
 import FirebaseCore
 import FirebaseFirestore
+import Photos
 import Dependencies
 
 class SampleHandler: RPBroadcastSampleHandler {
 
+    @Dependency(\.defaultFirestore) var defaultFirestore
+    
+    private var writer: BroadcastWriter?
+    private let fileManager: FileManager = .default
+    private let nodeURL: URL
+    
     override init() {
+        // Prepare dependencies
+        prepareDependencies {
+            try! $0.bootstrapDatabase()
+        }
+        
+        // Setup recording URL
+        nodeURL = fileManager.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+            .appendingPathExtension(for: .mpeg4Movie)
+        
+        if fileManager.fileExists(atPath: nodeURL.path) {
+            try? fileManager.removeItem(at: nodeURL)
+        }
+        
         super.init()
         FileLogger.log("SampleHandler init")
-        do {
-            try prepareDependencies {
-                try! $0.bootstrapDatabase()
-            }
-            FileLogger.log("Dependencies prepared")
-        } catch {
-            FileLogger.log("Failed to prepare dependencies: \(error)")
-        }
     }
 
     override func broadcastStarted(withSetupInfo setupInfo: [String : NSObject]?) {
-        // User has requested to start the broadcast.
-        FileLogger.log("broadcastStarted")
-        logEvent("Broadcast Started")
+        // User has requested to start the broadcast. Setup info from the UI extension can be supplied but optional. 
+        logEvent("broadcastStarted")
+        
+        let screen: UIScreen = .main
+        do {
+            writer = try .init(
+                outputURL: nodeURL,
+                screenSize: screen.bounds.size,
+                screenScale: screen.scale
+            )
+            try writer?.start()
+            logEvent("Recording started")
+        } catch {
+            logEvent("Failed to start recording: \(error)")
+            finishBroadcastWithError(error)
+        }
     }
     
     override func broadcastPaused() {
         // User has requested to pause the broadcast. Samples will stop being delivered.
+        logEvent("broadcastPaused")
+        writer?.pause()
     }
     
     override func broadcastResumed() {
         // User has requested to resume the broadcast. Samples delivery will resume.
+        logEvent("broadcastResumed")
+        writer?.resume()
     }
+    
+    private var sampleCount = 0
     
     override func broadcastFinished() {
         // User has requested to finish the broadcast.
-        FileLogger.log("broadcastFinished")
-        logEvent("Broadcast Finished")
+        logEvent("broadcastFinished. Samples processed: \(sampleCount)")
         
-        // Give SyncEngine a moment to push changes
-        Thread.sleep(forTimeInterval: 1.0)
-    }
-    
-    override func broadcastAnnotated(withApplicationInfo applicationInfo: [AnyHashable : Any]) {
-        // Log application info
-        if let jsonData = try? JSONSerialization.data(withJSONObject: applicationInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            logEvent("Broadcast Annotated: \(jsonString)")
-        } else {
-            logEvent("Broadcast Annotated: \(applicationInfo)")
+        guard let writer = writer else {
+            logEvent("Writer is nil")
+            return
         }
+        
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        let outputURL: URL
+        do {
+            outputURL = try writer.finish()
+            logEvent("Writer finished. Output URL: \(outputURL.path)")
+        } catch {
+            logEvent("Writer failure: \(error)")
+            dispatchGroup.leave()
+            return
+        }
+        
+        // Move to App Group Container
+        let appGroupID = "group.halfjew22.swift-sharing-exploration"
+        guard let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+            logEvent("Failed to get App Group container for \(appGroupID)")
+            dispatchGroup.leave()
+            return
+        }
+        
+        let videosDirectory = containerURL.appendingPathComponent("Videos")
+        do {
+            if !fileManager.fileExists(atPath: videosDirectory.path) {
+                try fileManager.createDirectory(at: videosDirectory, withIntermediateDirectories: true)
+            }
+            
+            let destinationURL = videosDirectory.appendingPathComponent(outputURL.lastPathComponent)
+            if fileManager.fileExists(atPath: destinationURL.path) {
+                try fileManager.removeItem(at: destinationURL)
+            }
+            
+            try fileManager.moveItem(at: outputURL, to: destinationURL)
+            logEvent("Video moved to App Group: \(destinationURL.path)")
+            
+            // Optional: Still try to save to Photos if possible, but the file is safe now.
+            // For now, let's just confirm we have the file.
+            
+        } catch {
+            logEvent("Failed to move video to App Group: \(error)")
+        }
+        
+        dispatchGroup.leave()
     }
     
     override func processSampleBuffer(_ sampleBuffer: CMSampleBuffer, with sampleBufferType: RPSampleBufferType) {
-        switch sampleBufferType {
-        case RPSampleBufferType.video:
-            // Handle video sample buffer
-            break
-        case RPSampleBufferType.audioApp:
-            // Handle audio sample buffer for app audio
-            break
-        case RPSampleBufferType.audioMic:
-            // Handle audio sample buffer for mic audio
-            break
-        @unknown default:
-            // Handle other sample buffer types
-            fatalError("Unknown type of sample buffer")
+        sampleCount += 1
+        guard let writer = writer else {
+            return
+        }
+        
+        do {
+            _ = try writer.processSampleBuffer(sampleBuffer, with: sampleBufferType)
+        } catch {
+            logEvent("Buffer processing error: \(error)")
+        }
+        
+        // Log app switching events (existing logic)
+        if sampleBufferType == .video {
+            if let attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, createIfNecessary: false) as? [[String: Any]],
+               let attachment = attachments.first,
+               let bundleID = attachment["RPApplicationInfoBundleIdentifier"] as? String {
+                
+                // Only log if the bundle ID has changed to avoid spamming
+                if bundleID != lastBundleID {
+                    lastBundleID = bundleID
+                    logEvent("Broadcast Annotated: {\n  \"RPApplicationInfoBundleIdentifier\" : \"\(bundleID)\"\n}")
+                }
+            }
         }
     }
     
-    private func logEvent(_ title: String) {
+    private var lastBundleID: String?
+    
+    private func logEvent(_ message: String) {
+        let title = message
         let item = Item(id: UUID(), title: title, timestamp: Date())
         
         // Using Firestore directly
         if FirebaseApp.app() != nil {
              do {
-                 try Firestore.firestore().collection("items").addDocument(from: item)
+                 try! self.defaultFirestore.collection("logs").addDocument(from: item)
                  FileLogger.log("Logged event: \(title)")
              } catch {
                  FileLogger.log("Failed to log event: \(error)")
              }
         } else {
-             FileLogger.log("Firebase not configured, cannot log event: \(title)")
+            FileLogger.log("Firebase not configured, skipping upload: \(title)")
         }
     }
 }

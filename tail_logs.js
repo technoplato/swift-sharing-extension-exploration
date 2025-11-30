@@ -48,7 +48,7 @@ function startListening() {
     // Actually, onSnapshot sends the initial state. We can suppress that if we want, 
     // but seeing the current state is often useful.
     
-    const q = query(collection(db, "items"), orderBy("timestamp", "asc"));
+    const q = query(collection(db, "logs"), orderBy("timestamp", "asc"));
     
     let isInitialLoad = true;
 

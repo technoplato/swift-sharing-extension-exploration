@@ -4,18 +4,19 @@ import ReplayKit
 import SharingFirestore
 import FirebaseFirestore
 import Sharing
+import Photos
 
 struct ContentView: View {
     @SharedReader(
         .query(
             configuration: .init(
-                path: "items",
+                path: "logs",
                 predicates: [.order(by: "timestamp", descending: true)],
                 animation: .default
             )
         )
     )
-    var items: IdentifiedArrayOf<Item>
+    var items: [Item]
     
     @Dependency(\.defaultFirestore) var database
     
@@ -25,45 +26,55 @@ struct ContentView: View {
     @State private var showAlert = false
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(items) { item in
-                    VStack(alignment: .leading) {
-                        Text(item.title)
-                            .font(.headline)
-                        Text(item.timestamp.formatted(date: .omitted, time: .standard))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .onDelete(perform: deleteItems)
-                // .id(refreshID) // Force rebuild
-            }
-            .navigationTitle("Items")
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(action: deleteAllItems) {
-                        Label("Clear Logs", systemImage: "trash")
-                    }
-                }
-            }
-            .safeAreaInset(edge: .bottom) {
+        TabView {
+            NavigationView {
                 VStack {
-                    Text("Start Broadcast")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    List {
+                        ForEach(items) { item in
+                            VStack(alignment: .leading) {
+                                Text(item.title)
+                                    .font(.headline)
+                                Text(item.timestamp, style: .time)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .onDelete(perform: deleteItems)
+                    }
+                    
+                    Divider()
+                    
                     BroadcastPickerView()
-                        .frame(width: 50, height: 50)
+                        .frame(width: 60, height: 60)
+                        .padding()
+                        .background(Color.secondary.opacity(0.1))
+                        .cornerRadius(10)
+                        .padding(.bottom)
                 }
-                .padding()
-                .background(.thinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .padding()
+                .navigationTitle("Shared Items")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        HStack {
+                            Button(action: addItem) {
+                                Label("Add Item", systemImage: "plus")
+                            }
+                            Button(action: deleteAllItems) {
+                                Label("Delete All", systemImage: "trash")
+                            }
+                        }
+                    }
+                }
+            }
+            .tabItem {
+                Label("Logs", systemImage: "list.bullet")
+            }
+            
+            NavigationView {
+                VideosView()
+                    .navigationTitle("Recordings")
+            }
+            .tabItem {
+                Label("Recordings", systemImage: "video")
             }
         }
         // .onReceive(NotificationCenter.default.publisher(for: Notification.Name("com.halfjew22.swift-sharing-exploration.database_changed"))) { _ in
@@ -83,7 +94,7 @@ struct ContentView: View {
     
     private func addItem() {
         let newItem = Item(id: UUID(), title: "Item \(Date().formatted())", timestamp: Date())
-        try? database.collection("items").addDocument(from: newItem)
+        try? database.collection("logs").addDocument(from: newItem)
     }
     
     private func deleteItems(offsets: IndexSet) {
@@ -111,7 +122,7 @@ struct ContentView: View {
             
             // Let's try to delete by query for now (inefficient but works without changing model too much).
             
-            database.collection("items").whereField("id", isEqualTo: item.id.uuidString).getDocuments { snapshot, error in
+            database.collection("logs").whereField("id", isEqualTo: item.id.uuidString).getDocuments { snapshot, error in
                 snapshot?.documents.forEach { doc in
                     doc.reference.delete()
                 }
@@ -120,12 +131,68 @@ struct ContentView: View {
     }
     
     private func deleteAllItems() {
-        // Deleting all documents in a collection is not a simple operation in Firestore (requires batching).
-        // For a demo, we can fetch and delete.
-        database.collection("items").getDocuments { snapshot, error in
+        database.collection("logs").getDocuments { snapshot, error in
             snapshot?.documents.forEach { doc in
                 doc.reference.delete()
             }
+        }
+    }
+}
+
+class VideoManager: ObservableObject {
+    @Published var videos: [URL] = []
+    private let fileManager = FileManager.default
+    private let appGroupID = "group.halfjew22.swift-sharing-exploration"
+    
+    init() {
+        loadVideos()
+    }
+    
+    func loadVideos() {
+        guard let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else { return }
+        let videosDirectory = containerURL.appendingPathComponent("Videos")
+        
+        do {
+            let urls = try fileManager.contentsOfDirectory(at: videosDirectory, includingPropertiesForKeys: nil)
+            videos = urls.filter { $0.pathExtension == "mp4" }.sorted(by: { $0.lastPathComponent > $1.lastPathComponent })
+        } catch {
+            print("Error loading videos: \(error)")
+        }
+    }
+    
+    func saveToPhotos(url: URL) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
+        }) { completed, error in
+            if completed {
+                print("Saved to photos")
+            }
+            if let error = error {
+                print("Error saving to photos: \(error)")
+            }
+        }
+    }
+}
+
+struct VideosView: View {
+    @StateObject private var videoManager = VideoManager()
+    
+    var body: some View {
+        List {
+            ForEach(videoManager.videos, id: \.self) { url in
+                HStack {
+                    Text(url.lastPathComponent)
+                        .font(.caption)
+                    Spacer()
+                    Button("Save") {
+                        videoManager.saveToPhotos(url: url)
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+        }
+        .onAppear {
+            videoManager.loadVideos()
         }
     }
 }

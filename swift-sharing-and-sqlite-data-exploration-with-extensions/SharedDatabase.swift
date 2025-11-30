@@ -69,7 +69,7 @@ struct FileLogger {
         // Using Firestore directly for static logging
         if FirebaseApp.app() != nil {
              do {
-                 try Firestore.firestore().collection("items").addDocument(from: item)
+                 try! Firestore.firestore().collection("logs").addDocument(from: item)
              } catch {
                  Logger.shared.error("Failed to log to Firestore: \(error, privacy: .public)")
              }
