@@ -1,5 +1,6 @@
 import SwiftUI
 import SQLiteData
+import ReplayKit
 
 struct ContentView: View {
     @FetchAll(Item.order(by: \.timestamp))
@@ -29,6 +30,19 @@ struct ContentView: View {
                     }
                 }
             }
+            .safeAreaInset(edge: .bottom) {
+                VStack {
+                    Text("Start Broadcast")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    BroadcastPickerView()
+                        .frame(width: 50, height: 50)
+                }
+                .padding()
+                .background(.thinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .padding()
+            }
         }
     }
     
@@ -46,6 +60,17 @@ struct ContentView: View {
             }
         }
     }
+}
+
+struct BroadcastPickerView: UIViewRepresentable {
+    func makeUIView(context: Context) -> RPSystemBroadcastPickerView {
+        let picker = RPSystemBroadcastPickerView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        // picker.preferredExtension = "com.halfjew22.swift-sharing-and-sqlite-data-exploration-with-extensions.BroadcastExtension"
+        picker.showsMicrophoneButton = false
+        return picker
+    }
+    
+    func updateUIView(_ uiView: RPSystemBroadcastPickerView, context: Context) {}
 }
 
 #Preview {
