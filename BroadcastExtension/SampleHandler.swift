@@ -72,6 +72,15 @@ class SampleHandler: RPBroadcastSampleHandler {
         writer?.resume()
     }
     
+    override func broadcastAnnotated(withApplicationInfo applicationInfo: [AnyHashable : Any]) {
+        if let bundleID = applicationInfo["RPApplicationInfoBundleIdentifier"] as? String {
+            if bundleID != lastBundleID {
+                lastBundleID = bundleID
+                logEvent("Broadcast Annotated: {\n  \"RPApplicationInfoBundleIdentifier\" : \"\(bundleID)\"\n}")
+            }
+        }
+    }
+    
     private var sampleCount = 0
     
     override func broadcastFinished() {
