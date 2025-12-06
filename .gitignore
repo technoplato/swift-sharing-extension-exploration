@@ -2,3 +2,7 @@
 GoogleService-Info.plist
 node_modules/
 firestore_logs.txt
+.DS_Store
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
